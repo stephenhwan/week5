@@ -30,6 +30,7 @@ if (isset($_POST['joketext'])){
         $sql = 'INSERT INTO joke SET
         joketext = :joketext,
         jokedate = CURDATE(),
+        authorid = 1,
         image = :image';
         
         $stmt = $pdo->prepare($sql);
