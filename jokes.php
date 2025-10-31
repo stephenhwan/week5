@@ -2,23 +2,23 @@
 try {
     include 'includes/DatabaseConnection.php';
 
-    $sql = '
-        SELECT
-            j.id,
-            j.joketext,
-            j.jokedate,
-            j.image,
-            a.email AS email
-        FROM joke AS j
-        LEFT JOIN authorid AS a
-            ON j.Authorid = a.id
-        ORDER BY j.jokedate DESC, j.id DESC
-    ';
+ $sql = '
+    SELECT
+        q.`Id`    AS id,
+        q.`Text`  AS text,
+        q.`Date`  AS date,
+        q.`Img`   AS image,
+        u.`Email` AS email,
+        m.`Name` AS module
+    FROM `Question` AS q
+    LEFT JOIN `User` AS u
+        ON q.`UserId` = u.`Id`
+    LEFT JOIN `Module` AS m ON q.`ModuleId` = m.`Id`
+    ORDER BY q.`Date` DESC, q.`Id` DESC
+';
 
-    // You can pass $jokes (array) to the template:
-    $jokes = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-
-    $title = 'Joke list';
+    $questions = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    $title = 'Question list';
 
     ob_start();
     include 'templates/jokes.html.php';

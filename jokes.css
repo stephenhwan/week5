@@ -1,145 +1,209 @@
-* {margin: 0; padding: 0; }
+/* ========== Generic Data Table (BEM) ========== */
 
-body {font-family: Arial, Helvetica, Sans-serif; }
-header {display: block;  background-color: #3cbc8d; padding: 20px; border-bottom: 5px solid #757575;}
-h1 {font-weight: normal; padding: 1.5em; color: white; text-shadow: 1px 1px 0px #444; width: 1000px; margin: auto;}
-
-nav {background-color: #443A5C;}
-
-nav a {color: white; text-decoration: none;}
-nav a:hover {color: #ddd;}
-nav ul {display: table; width: 1000px; margin: auto;}
-nav li {display: table-cell; text-align: center; padding: 1em;}
-
-main {overflow: auto; min-height: 30vh; background-color: #f7f7f7; width: 1000px; margin: auto; box-shadow: -1000px 0 0 #f7f7f7, 1000px 0 0 #f7f7f7; padding: 20px;}
-
-footer {padding: 1em; background-color: #FFC9A7 ; font-size: 0.8em;}
-
-p {margin-bottom: 1em;}
-
-body {font-size: 1.2em; font-family: arial, helvetica, sans-serif}
-input, label, select, textarea {float: left; width: 15em; margin-bottom: 1em;  padding: 0.5em;}
-label {clear: left; padding: 0; margin: 0;}
-input[type="submit"] {margin-left: 15em; width: auto; padding: 0.5em 1em; clear: both; font-size: 1em;}
-input[type="file"] {padding: 0.3em;}
-form {overflow: auto; clear: both; display: block;}
-
-blockquote {display: block; margin-bottom: 1em; border-bottom: 1px solid #ccc; padding: 1em; background-color: white;}
-blockquote p {margin-bottom: 0.5em;}
-blockquote form {display: table-cell; width: 10%;}
-
-/* Style cho bảng jokes */
-.jokes-table-container {
-    overflow-x: auto;
-    margin: 0;
+/* Container */
+.data-table__container {
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 0 20px;
 }
 
-.jokes-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: rgb(240, 205, 205);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    table-layout: fixed;
+/* Grid Table */
+.data-table__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 120px 120px;
+  gap: 0;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
-.jokes-table thead {
-    background-color: #4114ab;
-    color: white;
+/* Flatten table wrappers so grid controls columns */
+.data-table__grid thead,
+.data-table__grid tbody,
+.data-table__grid tfoot {
+  display: contents;
 }
 
-.jokes-table th {
-    padding: 12px;
-    text-align: left;
-    font-weight: bold;
-    border-bottom: 2px solid #3cbc8d;
+/* Header cells */
+.data-table__grid th {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 18px 20px;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-right: 1px solid rgba(255,255,255,0.2);
+}
+.data-table__grid th:last-child { border-right: none; }
+
+/* Body cells */
+.data-table__grid td {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  background: white;
+  transition: background-color 0.3s;
 }
 
-.jokes-table td {
-    padding: 12px;
-    border-bottom: 1px solid #e0e0e0;
-    vertical-align: middle;
+/* Hover entire row */
+.data-table__grid tbody tr:hover td {
+  background-color: #f8f9ff;
 }
 
-.jokes-table tbody tr:hover {
-    background-color: #f5f5f5;
+/* Cell: main text */
+.data-table__cell--text {
+  line-height: 1.6;
+  color: #2d3748;
+  font-size: 15px;
+  border-left: 4px solid transparent;
+  transition: all 0.3s;
+}
+.data-table__grid tbody tr:hover .data-table__cell--text {
+  border-left-color: #667eea;
+  padding-left: 16px;
 }
 
-/* Cột joke text - cho phép xuống dòng */
-.joke-text {
-    width: 45%;
-    word-wrap: break-word;
-    word-break: break-word;
-    white-space: normal;
-    line-height: 1.5;
+/* Cell: user */
+.data-table__cell--user { color: #4a5568; }
+.data-table__cell--user a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 12px;
+  background: #f0f4ff;
+  border-radius: 6px;
+  display: inline-block;
+  transition: all 0.3s;
+}
+.data-table__cell--user a:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+.data-table__no-user {
+  color: #a0aec0;
+  font-style: italic;
+  font-size: 13px;
 }
 
-/* Cột image - kích thước cố định */
-.joke-image-cell {
-    width: 200px;
-    text-align: center;
-    padding: 8px;
+/* Cell: module badge */
+.data-table__cell--module {
+  font-weight: 600;
+  font-size: 13px;
+}
+.data-table__cell--module::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  margin-right: 8px;
+  animation: data-table-pulse 2s infinite;
+}
+@keyframes data-table-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-.joke-thumbnail {
-    width: 100%;
-    height: 150px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    object-fit: cover;
+/* Cell: image */
+.data-table__cell--image { justify-content: center; }
+.data-table__thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background:
+    linear-gradient(white, white) padding-box,
+    linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+  transition: all 0.4s;
+  cursor: pointer;
+}
+.data-table__thumbnail:hover {
+  transform: scale(1.15) rotate(3deg);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+.data-table__no-image {
+  color: #a0aec0;
+  font-style: italic;
+  font-size: 12px;
+  background: #f7fafc;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+/* Cell: date badge */
+.data-table__cell--date {
+  color: #4a5568;
+  font-size: 13px;
+  font-weight: 500;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 8px 12px !important;
+  border-radius: 8px;
+  justify-content: center;
+}
+
+/* Empty state (supports colspan fallback) */
+.data-table__empty,
+.data-table__grid tbody td[colspan="5"] {
+  grid-column: 1 / -1;
+  justify-content: center;
+  padding: 80px 20px !important;
+  color: #a0aec0;
+  font-size: 18px;
+  font-style: italic;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* Footer cell (tfoot) */
+.data-table__footer {
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+  padding: 16px 20px !important;
+  background: #f7fafc;
+  color: #4a5568;
+  font-weight: 600;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 1200px) {
+  .data-table__grid {
+    grid-template-columns: 2fr 1fr 0.8fr 100px 100px;
+  }
+}
+
+@media (max-width: 992px) {
+  .data-table__grid {
+    grid-template-columns: 1.5fr 1fr 0.8fr 80px 80px;
+    font-size: 13px;
+  }
+  .data-table__grid th,
+  .data-table__grid td { padding: 12px; }
+  .data-table__thumbnail { width: 60px; height: 60px; }
+}
+
+@media (max-width: 768px) {
+  .data-table__grid { grid-template-columns: 1fr; }
+  .data-table__grid th { display: none; }
+  .data-table__grid td {
+    border-bottom: none;
+    border-left: 4px solid #667eea;
+  }
+  .data-table__grid tbody tr:hover td { border-left-color: #764ba2; }
+  .data-table__grid td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #667eea;
     display: block;
+    margin-bottom: 5px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
 }
-
-.no-image {
-    color: #999;
-    font-style: italic;
-    font-size: 0.9em;
-}
-
-/* Cột date */
-.joke-date-cell {
-    width: 140px;
-    white-space: nowrap;
-    color: #666;
-}
-
-/* Cột actions */
-.joke-actions {
-    width: 120px;
-    text-align: center;
-}
-
-.joke-actions form {
-    margin: 0;
-    float: none;
-}
-
-.delete-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.3s;
-}
-
-.delete-btn:hover {
-    background-color: #c82333;
-}
-
-.errors {padding: 1em; border: 1px solid red; background-color: lightyellow; color: red; margin-bottom: 1em; overflow: auto;}
-.errors ul {margin-left: 1em;}
-
-form p {clear: both;}
-input[type="checkbox"] {float: left; clear: left; width: auto; margin-right: 10px;}
-input[type="checkbox"] + label {clear: right;}
-
-.jokelist {display: table;}
-.categories {display: table-cell; width: 20%; background-color: #28168e; padding: 1em; list-style-type: none;}
-.categories a {color: white; text-decoration: none;}
-.categories li {margin-bottom: 1em;}
-.jokelist .jokes {display: table-cell; padding: 1em;}
-
-.currentpage:before { content: "["; }
-.currentpage:after { content: "]"; }

@@ -1,58 +1,62 @@
-<div class="jokes-table-container">
-  <table class="jokes-table">
+<div class="questions-table-container">
+  <table class="questions-table">
     <thead>
       <tr>
-        <th>Joke Text</th>
+        <th>Question Text</th>
+        <th>User</th>
+        <th>Module</th>
         <th>Image</th>
         <th>Date</th>
-        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <?php foreach ($jokes as $joke): ?>
+      <?php if (empty($questions)): ?>
         <tr>
-          <td class="joke-text">
-            <?= htmlspecialchars($joke['joketext'] ?? '', ENT_QUOTES, 'UTF-8') ?>
-            <?php if (!empty($joke['email'])): ?>
-              <br>
-              <small>
-                by
-                <a href="mailto:<?= htmlspecialchars($joke['email'], ENT_QUOTES, 'UTF-8') ?>">
-                  <?= htmlspecialchars($joke['email'], ENT_QUOTES, 'UTF-8') ?>
-                </a>
-              </small>
-            <?php endif; ?>
-          </td>
-          <td class="joke-image-cell">
-            <?php if (!empty($joke['image'])): ?>
-              <img
-                src="uploads/<?= htmlspecialchars(basename($joke['image']), ENT_QUOTES, 'UTF-8') ?>"
-                alt="Joke image"
-                class="joke-thumbnail">
-            <?php else: ?>
-              <span class="no-image">No image</span>
-            <?php endif; ?>
-          </td>
-          <td class="joke-date-cell">
-            <?= htmlspecialchars($joke['jokedate'] ?? '', ENT_QUOTES, 'UTF-8') ?>
-          </td>
-          <td class="joke-actions">
-            <!-- Edit Button -->
-            <a href="editjoke.php?id=<?= (int)($joke['id'] ?? 0) ?>" class="edit-btn">Edit</a>
-            
-            <!-- Delete Form -->
-            <form action="deletejoke.php" method="post"
-                  onsubmit="return confirm('Are you sure you want to delete this joke?');">
-              <input type="hidden" name="id" value="<?= (int)($joke['id'] ?? 0) ?>">
-              <?php if (!empty($joke['image'])): ?>
-                <input type="hidden" name="image"
-                       value="<?= htmlspecialchars(basename($joke['image']), ENT_QUOTES, 'UTF-8') ?>">
-              <?php endif; ?>
-              <button type="submit" class="delete-btn">Delete</button>
-            </form>
-          </td>
+          <td colspan="5" style="text-align: center;">No questions found.</td>
         </tr>
-      <?php endforeach; ?>
+      <?php else: ?>
+        <?php foreach ($questions as $question): ?>
+          <tr>
+            <!-- Question Text -->
+            <td class="question-text">
+              <?= htmlspecialchars($question['text'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+            </td>
+            
+            <!-- User Email -->
+            <td class="question-user-cell">
+              <?php if (!empty($question['email'])): ?>
+                <a href="mailto:<?= htmlspecialchars($question['email'], ENT_QUOTES, 'UTF-8') ?>">
+                  <?= htmlspecialchars($question['email'], ENT_QUOTES, 'UTF-8') ?>
+                </a>
+              <?php else: ?>
+                <span class="no-user">Unknown</span>
+              <?php endif; ?>
+            </td>
+            
+            <!-- Module -->
+            <td class="question-module-cell">
+              <?= htmlspecialchars($question['module'] ?? 'N/A', ENT_QUOTES, 'UTF-8') ?>
+            </td>
+            
+            <!-- Image -->
+            <td class="question-image-cell">
+              <?php if (!empty($question['image'])): ?>
+                <img
+                  src="uploads/<?= htmlspecialchars(basename($question['image']), ENT_QUOTES, 'UTF-8') ?>"
+                  alt="Question image"
+                  class="question-thumbnail">
+              <?php else: ?>
+                <span class="no-image">No image</span>
+              <?php endif; ?>
+            </td>
+            
+            <!-- Date -->
+            <td class="question-date-cell">
+              <?= htmlspecialchars($question['date'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      <?php endif; ?>
     </tbody>
   </table>
 </div>
